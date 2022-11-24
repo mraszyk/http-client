@@ -51,7 +51,7 @@ connectionReadLineWith conn bs0 =
         case S.break (== charLF) bs of
             (_, "") -> do
                 let total' = total + S.length bs
-                when (total' > 4096) $ throwHttp OverlongHeaders
+                when (total' > 65536) $ throwHttp OverlongHeaders
                 bs' <- connectionRead conn
                 when (S.null bs') $ throwHttp IncompleteHeaders
                 go bs' (front . (bs:)) total'
